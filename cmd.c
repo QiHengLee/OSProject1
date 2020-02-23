@@ -44,7 +44,7 @@ void cmd_update_state(cmd_t *cmd, int block) {
     }
     pid_t pid = cmd->pid;
     int status;
-    waitpid(pid, &status, 0);       //DOBLOCK
+    waitpid(pid, &status, block);       
     if(WIFEXITED(status)) {             //If child exits
         int retval = WEXITSTATUS(status);       //return value of child
         cmd->status = retval;
@@ -104,6 +104,6 @@ void cmd_print_output(cmd_t *cmd) {
         printf("%s[#%d] : output not ready", cmd->name, cmd->pid);
     }
     else {
-        write(STDOUT_FLIENO, cmd->output, cmd->output_size);
+        write(STDOUT_FILENO, cmd->output, cmd->output_size);
     }
 }
